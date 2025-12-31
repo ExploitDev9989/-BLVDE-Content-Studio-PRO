@@ -1,0 +1,517 @@
+================================================================================
+  C# CHEAT SHEET - MOST COMMON CODE YOU'LL USE
+================================================================================
+
+This document explains the most common C# code patterns you'll see and use.
+Everything is explained in simple terms with examples!
+
+
+================================================================================
+SECTION 1: BASIC SYNTAX & STRUCTURE
+================================================================================
+
+1. COMMENTS (Explaining your code)
+----------------------------------
+// This is a single-line comment
+// Use this to explain what one line does
+
+/* This is a multi-line comment
+   Use this to explain bigger sections
+   of code or multiple lines */
+
+/// <summary>
+/// This is an XML documentation comment
+/// Used to describe what a method or class does
+/// </summary>
+
+
+2. VARIABLES (Storing data)
+----------------------------------
+// Declaring a variable (creating it)
+string name = "BLVDE";           // Text (string)
+int age = 25;                     // Whole number (integer)
+double price = 19.99;             // Decimal number
+bool isActive = true;             // True or false (boolean)
+
+// You can also use 'var' - C# figures out the type
+var userName = "Miguel";          // C# knows this is a string
+var count = 10;                   // C# knows this is an int
+
+
+3. STRINGS (Working with text)
+----------------------------------
+string firstName = "Miguel";
+string lastName = "Smith";
+
+// Combining strings (concatenation)
+string fullName = firstName + " " + lastName;
+
+// String interpolation (easier way to combine)
+string greeting = $"Hello, {firstName}!";  // Result: "Hello, Miguel!"
+
+// Checking if string is empty
+if (string.IsNullOrEmpty(firstName))
+{
+    // Do something if empty
+}
+
+
+4. IF STATEMENTS (Making decisions)
+----------------------------------
+int age = 18;
+
+if (age >= 18)
+{
+    // This runs if condition is true
+    Console.WriteLine("You are an adult");
+}
+else if (age >= 13)
+{
+    // This runs if first condition is false but this one is true
+    Console.WriteLine("You are a teenager");
+}
+else
+{
+    // This runs if all conditions are false
+    Console.WriteLine("You are a child");
+}
+
+
+5. LOOPS (Repeating code)
+----------------------------------
+// FOR loop - when you know how many times to repeat
+for (int i = 0; i < 5; i++)
+{
+    // This runs 5 times (i = 0, 1, 2, 3, 4)
+    Console.WriteLine($"Count: {i}");
+}
+
+// FOREACH loop - go through each item in a collection
+string[] names = { "Alice", "Bob", "Charlie" };
+foreach (string name in names)
+{
+    // This runs once for each name
+    Console.WriteLine(name);
+}
+
+// WHILE loop - repeat while condition is true
+int count = 0;
+while (count < 3)
+{
+    Console.WriteLine(count);
+    count++; // Increase count by 1
+}
+
+
+================================================================================
+SECTION 2: METHODS (Functions)
+================================================================================
+
+// Basic method structure
+public void SayHello()
+{
+    Console.WriteLine("Hello!");
+}
+
+// Method with parameters (inputs)
+public void Greet(string name)
+{
+    Console.WriteLine($"Hello, {name}!");
+}
+
+// Method that returns a value
+public int Add(int a, int b)
+{
+    return a + b;  // Send back the result
+}
+
+// Using the methods
+SayHello();              // Prints: Hello!
+Greet("BLVDE");          // Prints: Hello, BLVDE!
+int result = Add(5, 3);  // result = 8
+
+
+================================================================================
+SECTION 3: CLASSES & OBJECTS
+================================================================================
+
+// A class is a blueprint for creating objects
+public class Person
+{
+    // Properties (characteristics)
+    public string Name { get; set; }
+    public int Age { get; set; }
+    
+    // Constructor (runs when creating a new Person)
+    public Person(string name, int age)
+    {
+        Name = name;
+        Age = age;
+    }
+    
+    // Method (action the person can do)
+    public void Introduce()
+    {
+        Console.WriteLine($"Hi, I'm {Name} and I'm {Age} years old.");
+    }
+}
+
+// Creating and using an object
+Person miguel = new Person("Miguel", 25);
+miguel.Introduce();  // Prints: Hi, I'm Miguel and I'm 25 years old.
+
+
+================================================================================
+SECTION 4: WORKING WITH WINDOWS FORMS (UI)
+================================================================================
+
+1. CREATING CONTROLS (Buttons, Text Boxes, etc.)
+----------------------------------
+// Create a button
+Button myButton = new Button();
+myButton.Text = "Click Me!";           // Button text
+myButton.Location = new Point(50, 50); // Position (X, Y)
+myButton.Size = new Size(100, 30);     // Size (Width, Height)
+myButton.BackColor = Color.Blue;       // Background color
+myButton.ForeColor = Color.White;      // Text color
+
+// Add button to form
+this.Controls.Add(myButton);
+
+
+2. HANDLING BUTTON CLICKS
+----------------------------------
+// Connect a method to button click
+myButton.Click += new EventHandler(MyButton_Click);
+
+// The method that runs when clicked
+private void MyButton_Click(object sender, EventArgs e)
+{
+    MessageBox.Show("Button was clicked!");
+}
+
+// Shorter way (same thing)
+myButton.Click += (s, e) => 
+{
+    MessageBox.Show("Button clicked!");
+};
+
+
+3. WORKING WITH TEXT BOXES
+----------------------------------
+TextBox myTextBox = new TextBox();
+myTextBox.Location = new Point(50, 100);
+myTextBox.Size = new Size(200, 25);
+
+// Get text from text box
+string userInput = myTextBox.Text;
+
+// Set text in text box
+myTextBox.Text = "Hello!";
+
+// Make it read-only
+myTextBox.ReadOnly = true;
+
+// Multi-line text box
+myTextBox.Multiline = true;
+myTextBox.ScrollBars = ScrollBars.Vertical;
+
+
+4. MESSAGE BOXES (Pop-up messages)
+----------------------------------
+// Simple message
+MessageBox.Show("Hello!");
+
+// Message with title
+MessageBox.Show("This is the message", "Title");
+
+// Message with icon
+MessageBox.Show("Error occurred!", "Error", 
+                MessageBoxButtons.OK, 
+                MessageBoxIcon.Error);
+
+// Ask yes/no question
+DialogResult result = MessageBox.Show("Are you sure?", "Confirm", 
+                                       MessageBoxButtons.YesNo);
+if (result == DialogResult.Yes)
+{
+    // User clicked Yes
+}
+
+
+5. FILE DIALOGS (Choose files)
+----------------------------------
+// Open file dialog
+OpenFileDialog openDialog = new OpenFileDialog();
+openDialog.Title = "Select a video";
+openDialog.Filter = "Video Files|*.mp4;*.mov|All Files|*.*";
+
+if (openDialog.ShowDialog() == DialogResult.OK)
+{
+    string selectedFile = openDialog.FileName;
+    // Do something with the file
+}
+
+// Save file dialog
+SaveFileDialog saveDialog = new SaveFileDialog();
+saveDialog.Filter = "Text Files|*.txt";
+if (saveDialog.ShowDialog() == DialogResult.OK)
+{
+    string savePath = saveDialog.FileName;
+}
+
+
+================================================================================
+SECTION 5: ERROR HANDLING (Try-Catch)
+================================================================================
+
+// Try to do something that might fail
+try
+{
+    // Code that might cause an error
+    int result = 10 / 0;  // This will cause an error!
+}
+catch (Exception ex)
+{
+    // This runs if an error occurs
+    MessageBox.Show($"Error: {ex.Message}");
+}
+finally
+{
+    // This ALWAYS runs (error or not)
+    // Good for cleanup code
+}
+
+// Catching specific errors
+try
+{
+    string text = File.ReadAllText("file.txt");
+}
+catch (FileNotFoundException)
+{
+    MessageBox.Show("File not found!");
+}
+catch (Exception ex)
+{
+    MessageBox.Show($"Other error: {ex.Message}");
+}
+
+
+================================================================================
+SECTION 6: WORKING WITH HTTP/APIs
+================================================================================
+
+// Making HTTP requests (for Blotato API)
+using System.Net.Http;
+using System.Text;
+using Newtonsoft.Json;
+
+// Create HTTP client
+HttpClient client = new HttpClient();
+
+// Add headers
+client.DefaultRequestHeaders.Add("blotato-api-key", "your_api_key");
+
+// Make GET request
+HttpResponseMessage response = await client.GetAsync("https://api.example.com/data");
+string responseText = await response.Content.ReadAsStringAsync();
+
+// Make POST request with JSON
+var data = new { name = "BLVDE", age = 25 };
+string json = JsonConvert.SerializeObject(data);
+var content = new StringContent(json, Encoding.UTF8, "application/json");
+HttpResponseMessage postResponse = await client.PostAsync("https://api.example.com/post", content);
+
+
+================================================================================
+SECTION 7: ASYNC/AWAIT (For API calls and long operations)
+================================================================================
+
+// Async method - doesn't freeze the UI
+public async Task<string> DownloadDataAsync()
+{
+    HttpClient client = new HttpClient();
+    string data = await client.GetStringAsync("https://example.com");
+    return data;
+}
+
+// Calling async method
+private async void btnDownload_Click(object sender, EventArgs e)
+{
+    btnDownload.Enabled = false;  // Disable button
+    
+    string result = await DownloadDataAsync();  // Wait for download
+    
+    MessageBox.Show(result);
+    btnDownload.Enabled = true;  // Re-enable button
+}
+
+
+================================================================================
+SECTION 8: LISTS & ARRAYS (Collections of data)
+================================================================================
+
+// Array (fixed size)
+string[] names = new string[3];
+names[0] = "Alice";
+names[1] = "Bob";
+names[2] = "Charlie";
+
+// Or create with values
+string[] colors = { "Red", "Green", "Blue" };
+
+// List (can grow/shrink)
+List<string> videoFiles = new List<string>();
+videoFiles.Add("video1.mp4");      // Add item
+videoFiles.Add("video2.mp4");
+videoFiles.Remove("video1.mp4");   // Remove item
+int count = videoFiles.Count;      // Get number of items
+
+// Loop through list
+foreach (string video in videoFiles)
+{
+    Console.WriteLine(video);
+}
+
+
+================================================================================
+SECTION 9: COMMON PATTERNS IN YOUR BLVDE APP
+================================================================================
+
+1. CHECKING IF TEXT BOX IS EMPTY
+----------------------------------
+if (string.IsNullOrEmpty(txtVideoPath.Text))
+{
+    MessageBox.Show("Please select a video!");
+    return;
+}
+
+
+2. DISABLING BUTTON DURING OPERATION
+----------------------------------
+btnPost.Enabled = false;
+btnPost.Text = "Posting...";
+// Do the operation
+btnPost.Enabled = true;
+btnPost.Text = "Post";
+
+
+3. CHANGING COLORS ON HOVER
+----------------------------------
+button.MouseEnter += (s, e) => 
+{
+    button.BackColor = Color.LightBlue;
+};
+button.MouseLeave += (s, e) => 
+{
+    button.BackColor = Color.Blue;
+};
+
+
+4. READING/WRITING FILES
+----------------------------------
+// Write to file
+File.WriteAllText("config.txt", "Some text");
+
+// Read from file
+string content = File.ReadAllText("config.txt");
+
+// Check if file exists
+if (File.Exists("video.mp4"))
+{
+    // File exists
+}
+
+
+================================================================================
+SECTION 10: USEFUL SHORTCUTS & TIPS
+================================================================================
+
+OPERATORS:
+----------
++   Addition or string concatenation
+-   Subtraction
+*   Multiplication
+/   Division
+%   Modulus (remainder)
+==  Equal to
+!=  Not equal to
+>   Greater than
+<   Less than
+>=  Greater than or equal
+<=  Less than or equal
+&&  AND (both conditions must be true)
+||  OR (at least one condition must be true)
+!   NOT (reverses true/false)
+
+INCREMENT/DECREMENT:
+--------------------
+count++;    // Same as: count = count + 1
+count--;    // Same as: count = count - 1
+count += 5; // Same as: count = count + 5
+
+NULL CHECKING:
+--------------
+string name = null;
+if (name == null)  // Check if null
+
+// Null-conditional operator
+int? length = name?.Length;  // Returns null if name is null
+
+// Null-coalescing operator
+string displayName = name ?? "Guest";  // Use "Guest" if name is null
+
+
+================================================================================
+SETUP INSTRUCTIONS
+================================================================================
+
+TO BUILD YOUR C# PROJECT:
+--------------------------
+1. Open terminal in project folder
+2. Run: dotnet build
+3. This creates the .exe file
+
+TO RUN YOUR PROJECT:
+--------------------
+1. Run: dotnet run
+   OR
+2. Double-click the .exe file in bin\Debug\net8.0\
+
+TO CREATE STANDALONE .EXE:
+--------------------------
+1. Run: dotnet publish -c Release -r win-x64 --self-contained
+2. Find .exe in: bin\Release\net8.0\win-x64\publish\
+
+PROJECT STRUCTURE:
+------------------
+YourProject/
+├── Program.cs           (Entry point - starts the app)
+├── Form1.cs             (Main form logic)
+├── Form1.Designer.cs    (UI design code)
+├── YourProject.csproj   (Project configuration)
+├── Resources/           (Images, files, etc.)
+└── bin/                 (Compiled .exe files)
+
+
+================================================================================
+NEXT STEPS FOR LEARNING
+================================================================================
+
+1. Practice modifying the BLVDE app
+2. Try adding new buttons and text boxes
+3. Experiment with colors and layouts
+4. Read the comments in the code
+5. Try breaking things and fixing them (best way to learn!)
+
+
+================================================================================
+REMEMBER:
+- Every line in your BLVDE app has comments explaining it
+- Don't be afraid to experiment
+- Errors are normal - they help you learn!
+- Google is your friend for specific questions
+- C# documentation: docs.microsoft.com/dotnet
+
+
+================================================================================

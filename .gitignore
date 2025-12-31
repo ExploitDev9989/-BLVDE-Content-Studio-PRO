@@ -1,0 +1,34 @@
+# Visual Studio
+.vs/
+[Bb]in/
+[Oo]bj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Deployment
+publish/
+publish_final/
+publish_ultimate/
+publish_ultimate_v10/
+publish_ultimate_final/
+publish_final_production/
+publish_final_v9/
+publish_final_v8/
+
+# Config (Do not push secrets!)
+blotato_config.json
+users.dat
+account_details.json
+
+# Content folders
+Content/Pending/*
+Content/Posted/*
+!Content/Pending/.gitkeep
+!Content/Posted/.gitkeep
+
+# Logs
+*.log
+error_analysis.txt
+debug_build_*.txt

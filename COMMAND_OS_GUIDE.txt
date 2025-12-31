@@ -1,0 +1,69 @@
+================================================================================
+  BLVDE COMMAND OS // v1.0 - USER GUIDE
+================================================================================
+
+Welcome to your new Command Center!
+This application is designed to be the "Master Control" for your entire setup.
+
+
+================================================================================
+SECTION 1: SYSTEM CONTROLS (Left Panel)
+================================================================================
+
+1. ☣ SHUTDOWN SYSTEM (Red Button)
+   - Function: Immediately turns off your computer.
+   - Safety: Includes a "Are you sure?" popup to prevent accidents.
+   - Command Used: shutdown /s /t 0
+
+2. ↺ RESTART SYSTEM (Orange Button)
+   - Function: Reboots your computer immediately.
+   - Safety: Includes confirmation popup.
+   - Command Used: shutdown /r /t 0
+
+3. 🔒 LOCK WORKSTATION (Blue Button)
+   - Function: Instantly locks your screen (goes to login screen).
+   - Use Case: When you need to step away quickly.
+
+
+================================================================================
+SECTION 2: AUTOMATION SUITE (Top Right Panel)
+================================================================================
+
+1. 🚀 RUN AUTO-POST (Pink Button)
+   - Function: Triggers the automated posting sequence.
+   - Current Status: Simulates posting (shows "Running..." then "Success").
+   - Future Plan: Will connect to the Blotato API script we wrote earlier.
+
+2. 🎬 GENERATE CONTENT (Green Button)
+   - Function: Will trigger AI video generation.
+   - Current Status: Placeholder (Coming Soon).
+
+
+================================================================================
+SECTION 3: AGENT CONSOLE (Bottom Panel)
+================================================================================
+
+This is where you give ME instructions through the interface!
+
+1. INPUT BOX (Green Text)
+   - Type specific commands or instructions here.
+   - Example: "Schedule 5 posts for tomorrow at 9 AM."
+
+2. ⚡ EXECUTE (Purple Button)
+   - Function: Saves your instructions to a file (`agent_instructions.txt`).
+   - Workflow: You type instructions -> Click Execute -> I (the Agent) can read that file and perform the task.
+
+
+================================================================================
+FUTURE UPGRADES PLANNED
+================================================================================
+
+- [ ] Connect "Auto-Post" to real Blotato API
+- [ ] Add "Stop Posting" emergency button
+- [ ] Connect "Generate Content" to AI generation tools
+- [ ] Add "System Status" monitoring (CPU/RAM usage)
+- [ ] Add "Post History" log in the console
+
+Enjoy your new Command Center!
+- BLVDE Content Studio Module
+================================================================================
