@@ -4,6 +4,16 @@
 
 BLVDE Content Studio is a premium Windows application (C# / .NET 8.0) designed for high-speed, automated social media distribution. Seamlessly upload videos and verified links to TikTok, Instagram, and YouTube Shorts simultaneously from a single, high-resolution command terminal.
 
+## 📥 Download
+
+> [!TIP]
+> **[Download the Latest Stable Version (v11.2-PRO)](https://github.com/ExploitDev9989/-BLVDE-Content-Studio-PRO/releases)**
+> *Note: For Windows 10/11. Requires .NET 8.0 Runtime.*
+
+## 📸 Dashboard Preview [2K]
+
+![Dashboard](screenshots/dashboard.png)
+
 ## ✨ Key Features
 
 - **🚀 Triple-Uplink**: Post to TikTok, Instagram, and YouTube Shorts in one click.
