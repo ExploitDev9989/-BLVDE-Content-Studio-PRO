@@ -35,10 +35,6 @@ BLVDE Content Studio is a premium Windows application (C# / .NET 8.0) designed f
 
 Launch the application and use the **[ >> CONFIG_API_NODES ]** button to link your Blotato API key and platform-specific numeric IDs.
 
-## 📸 Screenshots
-
-*(Add your high-res screenshots here)*
-
 ## ⚖️ License
 
 Private / Confidential. (c) 2025 BLVDE Studios.
