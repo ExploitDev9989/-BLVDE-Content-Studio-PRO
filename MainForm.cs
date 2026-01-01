@@ -10,17 +10,28 @@ namespace BLVDEContentStudio
 {
     public partial class MainForm : Form
     {
-        private readonly Color colRed = Color.FromArgb(239, 68, 68);
-        private readonly Color colGreen = Color.FromArgb(34, 197, 94);
-        private readonly Color colCyan = Color.FromArgb(99, 102, 241);
-        private readonly Color colYellow = Color.FromArgb(251, 146, 60);
+        // ====================================================================
+        // COLOR DEFINITIONS - Change these RGB values to modify theme colors
+        // ====================================================================
+        private readonly Color colRed = Color.FromArgb(239, 68, 68);         // Error/Warning color
+        private readonly Color colGreen = Color.FromArgb(34, 197, 94);       // Success/Online color
+        private readonly Color colCyan = Color.FromArgb(99, 102, 241);       // Accent/Highlight color
+        private readonly Color colYellow = Color.FromArgb(251, 146, 60);     // Processing/Busy color
 
-        private string _apiKey = "";
-        private string _tiktokId = "";
-        private string _instaId = "";
-        private string _youtubeId = "";
-        private int _prefWidth = 1200;
-        private int _prefHeight = 800;
+        // ====================================================================
+        // CONFIGURATION VARIABLES - API keys and user preferences
+        // ====================================================================
+        private string _apiKey = "";             // Blotato API authentication key
+        private string _tiktokId = "";           // TikTok account ID
+        private string _instaId = "";            // Instagram account ID
+        private string _youtubeId = "";          // YouTube account ID
+        
+        // ====================================================================
+        // WINDOW SIZE SETTINGS - Main application window dimensions
+        // Change these values to adjust default window size
+        // ====================================================================
+        private int _prefWidth = 1920;           // Window width in pixels (default)
+        private int _prefHeight = 1080;           // Window height in pixels (default)
         private const string CONFIG_FILE = "blotato_config.json";
 
         private readonly string PATH_PENDING = Path.Combine(Application.StartupPath, "Content", "Pending");
@@ -37,24 +48,12 @@ namespace BLVDEContentStudio
 
         private void SetupCustomControls()
         {
-            // Create Load Video Button (Manual injection for layout safety)
-            Button btnLoadVideo = new Button();
-            btnLoadVideo.Location = new System.Drawing.Point(830, 150); // Below status label in Automation group
-            btnLoadVideo.Size = new System.Drawing.Size(620, 260);
-            btnLoadVideo.Text = "[ 🛰️ LOAD_PACKET ]\nSELECT_MEDIA_OR_TXT";
-            btnLoadVideo.FlatStyle = FlatStyle.Flat;
-            btnLoadVideo.BackColor = Color.FromArgb(5, 5, 5);
-            btnLoadVideo.ForeColor = Color.FromArgb(0, 210, 255); // Cyan
-            btnLoadVideo.Font = new Font("Segoe UI Semibold", 14F, FontStyle.Bold);
-            btnLoadVideo.Cursor = Cursors.Hand;
-            btnLoadVideo.FlatAppearance.BorderColor = Color.FromArgb(0, 210, 255);
-            
-            btnLoadVideo.MouseEnter += (s, e) => { btnLoadVideo.BackColor = Color.FromArgb(0, 210, 255); btnLoadVideo.ForeColor = Color.Black; };
-            btnLoadVideo.MouseLeave += (s, e) => { btnLoadVideo.BackColor = Color.FromArgb(5, 5, 5); btnLoadVideo.ForeColor = Color.FromArgb(0, 210, 255); };
-            
+            // ====================================================================
+            // WIRE UP EVENT HANDLERS - Connect buttons to their click events
+            // ====================================================================
+            // Load Video button is now defined in Designer.cs
             btnLoadVideo.Click += btnLoadVideo_Click;
-            this.grpAutomation.Controls.Add(btnLoadVideo);
-
+            
             // Remote Timer
             System.Windows.Forms.Timer remoteTimer = new System.Windows.Forms.Timer() { Interval = 1000 };
             remoteTimer.Tick += RemoteTimer_Tick;
@@ -63,6 +62,9 @@ namespace BLVDEContentStudio
             btnExecuteAgent.Click += btnExecuteAgent_Click;
         }
 
+        // ====================================================================
+        // CONSOLE LOG FUNCTION - Writes messages to the terminal/console box
+        // ====================================================================
         private void Log(string message, Color? color = null)
         {
             if (this.InvokeRequired)
@@ -71,13 +73,20 @@ namespace BLVDEContentStudio
                 return;
             }
             string timestamp = DateTime.Now.ToString("HH:mm:ss");
-            Color logColor = color ?? Color.FromArgb(0, 255, 127); // Default Success Green
+            
+            // DEFAULT LOG TEXT COLOR - RGB(0, 255, 127) - Bright green
+            // Change this to modify the default console message color
+            Color logColor = color ?? Color.FromArgb(0, 255, 127);
 
+            // CONSOLE LOG OUTPUT FORMATTING
             txtConsoleLog.SelectionStart = txtConsoleLog.TextLength;
             txtConsoleLog.SelectionLength = 0;
+            
+            // TIMESTAMP COLOR - Gray for all timestamps
             txtConsoleLog.SelectionColor = Color.Gray;
             txtConsoleLog.AppendText($"[{timestamp}] ");
             
+            // MESSAGE COLOR - Uses the color specified in the Log() call
             txtConsoleLog.SelectionColor = logColor;
             txtConsoleLog.AppendText($"{message}{Environment.NewLine}");
             
@@ -216,8 +225,13 @@ namespace BLVDEContentStudio
              btnSettings.PerformClick();
         }
 
+        // ====================================================================
+        // INPUT DIALOG BOX - Popup windows for user input
+        // ====================================================================
         private string ShowInputDialog(string prompt, string defaultValue = "")
         {
+            // DIALOG WINDOW SIZE - Width=500px, Height=200px
+            // Change these values to make input dialogs bigger/smaller
             Form promptForm = new Form()
             {
                 Width = 500,
@@ -225,14 +239,19 @@ namespace BLVDEContentStudio
                 FormBorderStyle = FormBorderStyle.None,
                 Text = prompt,
                 StartPosition = FormStartPosition.CenterScreen,
-                BackColor = Color.Black,
-                ForeColor = colGreen
+                BackColor = Color.Black,      // Dialog background color
+                ForeColor = colGreen          // Dialog text color
             };
             
             promptForm.Paint += (s, e) => { ControlPaint.DrawBorder(e.Graphics, promptForm.ClientRectangle, colGreen, ButtonBorderStyle.Solid); };
 
+            // DIALOG LABEL - Position: X=20, Y=20 | Font: Consolas 12pt
             Label textLabel = new Label() { Left = 20, Top = 20, Text = prompt, ForeColor = colGreen, Font = new Font("Consolas", 12F), AutoSize = true };
+            
+            // DIALOG TEXT INPUT BOX - Position: X=20, Y=60 | Size: Width=460px | Font: Consolas 12pt
             TextBox textBox = new TextBox() { Left = 20, Top = 60, Width = 460, Text = defaultValue, BackColor = Color.Black, ForeColor = colGreen, Font = new Font("Consolas", 12F), BorderStyle = BorderStyle.FixedSingle };
+            
+            // DIALOG SUBMIT BUTTON - Position: X=360, Y=100 | Size: Width=120px
             Button confirmation = new Button() { Text = "[ SUBMIT ]", Left = 360, Width = 120, Top = 100, DialogResult = DialogResult.OK, FlatStyle = FlatStyle.Flat, BackColor = Color.Black, ForeColor = colGreen };
             confirmation.MouseEnter += (s, e) => { confirmation.BackColor = colGreen; confirmation.ForeColor = Color.Black; };
             confirmation.MouseLeave += (s, e) => { confirmation.BackColor = Color.Black; confirmation.ForeColor = colGreen; };
@@ -278,32 +297,93 @@ namespace BLVDEContentStudio
             MessageBox.Show("SYSTEM_LOCKED. AUTHORIZATION_REQUIRED.", "SECURE_SESSION");
         }
 
+        // ====================================================================
+        // SETTINGS DIALOG - Configuration window for API keys and IDs
+        // ====================================================================
         private void btnSettings_Click(object sender, EventArgs e)
         {
-            // NEW: Multi-Field Config + Resolution
+            // CHECK IF HIDE API KEYS IS ENABLED - For streaming protection
+            // Find the checkbox in the Settings tab
+            CheckBox chkHideApiKeys = this.Controls.Find("chkHideApiKeys", true).FirstOrDefault() as CheckBox;
+            bool hideKeys = chkHideApiKeys?.Checked ?? false;
+            
+            // SETTINGS WINDOW SIZE - Width=550px, Height=550px
+            // Change these values to make the settings window bigger/smaller
             Form inputForm = new Form();
             inputForm.Width = 550;
             inputForm.Height = 550;
             inputForm.FormBorderStyle = FormBorderStyle.FixedDialog;
             inputForm.Text = "SYSTEM_CONFIGURATION_OVERRIDE";
             inputForm.StartPosition = FormStartPosition.CenterScreen;
-            inputForm.BackColor = Color.Black;
-            inputForm.ForeColor = colGreen;
+            inputForm.BackColor = Color.Black;         // Settings window background
+            inputForm.ForeColor = colGreen;            // Settings window text color
 
+            // ====================================================================
+            // API KEY INPUT - First field in settings
+            // ====================================================================
+            // LABEL: Position X=20, Y=20 | Size: Width=500px, Height=40px | Font: Consolas 10pt
             Label lblKey = new Label() { Left = 20, Top = 20, Width = 500, Height = 40, Text = "BLOTATO_API_KEY (Required)", Font = new Font("Consolas", 10F) };
-            TextBox txtKey = new TextBox() { Left = 20, Top = 50, Width = 500, Text = _apiKey, BackColor = Color.FromArgb(20, 20, 20), ForeColor = colGreen, Font = new Font("Consolas", 12F) };
+            // TEXTBOX: Position X=20, Y=50 | Size: Width=500px | Font: Consolas 12pt
+            // MASKED if streaming mode is enabled
+            TextBox txtKey = new TextBox() { 
+                Left = 20, Top = 50, Width = 500, 
+                Text = hideKeys ? "•••••••••••••••••••••" : _apiKey, 
+                BackColor = Color.FromArgb(20, 20, 20), 
+                ForeColor = colGreen, 
+                Font = new Font("Consolas", 12F),
+                UseSystemPasswordChar = hideKeys  // Additional masking protection
+            };
 
+            // ====================================================================
+            // TIKTOK ID INPUT
+            // ====================================================================
+            // LABEL: Position X=20, Y=100 | Font: Consolas 10pt
             Label lblTk = new Label() { Left = 20, Top = 100, Width = 500, Text = ">> TIKTOK_ACCOUNT_ID (Numeric)", Font = new Font("Consolas", 10F) };
-            TextBox txtTk = new TextBox() { Left = 20, Top = 130, Width = 500, Text = _tiktokId, BackColor = Color.FromArgb(20, 20, 20), ForeColor = colGreen, Font = new Font("Consolas", 12F) };
+            // TEXTBOX: Position X=20, Y=130 | Size: Width=500px | Font: Consolas 12pt
+            TextBox txtTk = new TextBox() { 
+                Left = 20, Top = 130, Width = 500, 
+                Text = hideKeys ? "•••••••••••" : _tiktokId, 
+                BackColor = Color.FromArgb(20, 20, 20), 
+                ForeColor = colGreen, 
+                Font = new Font("Consolas", 12F) 
+            };
 
+            // ====================================================================
+            // INSTAGRAM ID INPUT
+            // ====================================================================
+            // LABEL: Position X=20, Y=180 | Font: Consolas 10pt
             Label lblIn = new Label() { Left = 20, Top = 180, Width = 500, Text = ">> INSTAGRAM_ACCOUNT_ID (Numeric)", Font = new Font("Consolas", 10F) };
-            TextBox txtIn = new TextBox() { Left = 20, Top = 210, Width = 500, Text = _instaId, BackColor = Color.FromArgb(20, 20, 20), ForeColor = colGreen, Font = new Font("Consolas", 12F) };
+            // TEXTBOX: Position X=20, Y=210 | Size: Width=500px | Font: Consolas 12pt
+            TextBox txtIn = new TextBox() { 
+                Left = 20, Top = 210, Width = 500, 
+                Text = hideKeys ? "•••••••••••" : _instaId, 
+                BackColor = Color.FromArgb(20, 20, 20), 
+                ForeColor = colGreen, 
+                Font = new Font("Consolas", 12F) 
+            };
 
+            // ====================================================================
+            // YOUTUBE ID INPUT
+            // ====================================================================
+            // LABEL: Position X=20, Y=260 | Font: Consolas 10pt
             Label lblYt = new Label() { Left = 20, Top = 260, Width = 500, Text = ">> YOUTUBE_ACCOUNT_ID (Numeric)", Font = new Font("Consolas", 10F) };
-            TextBox txtYt = new TextBox() { Left = 20, Top = 290, Width = 500, Text = _youtubeId, BackColor = Color.FromArgb(20, 20, 20), ForeColor = colGreen, Font = new Font("Consolas", 12F) };
+            // TEXTBOX: Position X=20, Y=290 | Size: Width=500px | Font: Consolas 12pt
+            TextBox txtYt = new TextBox() { 
+                Left = 20, Top = 290, Width = 500, 
+                Text = hideKeys ? "•••••••••••" : _youtubeId, 
+                BackColor = Color.FromArgb(20, 20, 20), 
+                ForeColor = colGreen, 
+                Font = new Font("Consolas", 12F) 
+            };
 
+            // ====================================================================
+            // RESOLUTION SELECTOR - Dropdown for window size presets
+            // ====================================================================
+            // LABEL: Position X=20, Y=340 | Font: Consolas 10pt
             Label lblRes = new Label() { Left = 20, Top = 340, Width = 500, Text = ">> DISPLAY_RESOLUTION_PROFILE", Font = new Font("Consolas", 10F) };
+            // DROPDOWN BOX: Position X=20, Y=370 | Size: Width=500px | Font: Consolas 12pt
             ComboBox cmbRes = new ComboBox() { Left = 20, Top = 370, Width = 500, BackColor = Color.FromArgb(20, 20, 20), ForeColor = colGreen, Font = new Font("Consolas", 12F), DropDownStyle = ComboBoxStyle.DropDownList };
+            // Available resolution options - Add or modify these to change window size options
             cmbRes.Items.AddRange(new string[] { "1200 x 800 (Standard)", "1920 x 1080 (HD)", "2160 x 1080 (Ultra-Wide)", "2560 x 1440 (2K)", "3840 x 2160 (4K)" });
             
             // Set current selection based on existing pref
@@ -318,15 +398,20 @@ namespace BLVDEContentStudio
             }
             if (!found) cmbRes.SelectedIndex = 0;
 
+            // ====================================================================
+            // SETTINGS DIALOG BUTTONS
+            // ====================================================================
+            // OK/COMMIT BUTTON: Position X=360, Y=430 | Size: Width=160px, Height=40px
             Button btnOk = new Button() { Text = "COMMIT_CHANGES", Left = 360, Top = 430, Width = 160, Height = 40, DialogResult = DialogResult.OK };
             btnOk.FlatStyle = FlatStyle.Flat;
-            btnOk.BackColor = colGreen;
-            btnOk.ForeColor = Color.Black;
+            btnOk.BackColor = colGreen;          // Green background
+            btnOk.ForeColor = Color.Black;       // Black text
             
+            // CANCEL/ABORT BUTTON: Position X=230, Y=430 | Size: Width=120px, Height=40px
             Button btnCancel = new Button() { Text = "ABORT", Left = 230, Top = 430, Width = 120, Height = 40, DialogResult = DialogResult.Cancel };
             btnCancel.FlatStyle = FlatStyle.Flat;
-            btnCancel.ForeColor = colGreen;
-            btnCancel.BackColor = Color.Black;
+            btnCancel.ForeColor = colGreen;      // Green text
+            btnCancel.BackColor = Color.Black;   // Black background
 
             inputForm.Controls.AddRange(new Control[] { lblKey, txtKey, lblTk, txtTk, lblIn, txtIn, lblYt, txtYt, lblRes, cmbRes, btnOk, btnCancel });
             inputForm.AcceptButton = btnOk;
@@ -334,10 +419,16 @@ namespace BLVDEContentStudio
 
             if (inputForm.ShowDialog() == DialogResult.OK)
             {
-                _apiKey = txtKey.Text.Trim();
-                _tiktokId = txtTk.Text.Trim();
-                _instaId = txtIn.Text.Trim();
-                _youtubeId = txtYt.Text.Trim();
+                // DON'T SAVE MASKED VALUES - Only save if user actually changed them
+                // If hideKeys was true, the values shown were masked, so don't overwrite
+                if (!hideKeys || !txtKey.Text.Contains("•"))
+                {
+                    _apiKey = txtKey.Text.Trim();
+                    _tiktokId = txtTk.Text.Trim();
+                    _instaId = txtIn.Text.Trim();
+                    _youtubeId = txtYt.Text.Trim();
+                }
+                // If streaming mode was on and user didn't change values, keep original values
 
                 // Parse Resolution
                 string resText = cmbRes.SelectedItem.ToString();
@@ -451,10 +542,12 @@ namespace BLVDEContentStudio
                     Log(">> IF UPLOAD FAILS, USE A .TXT FILE WITH A DIRECT LINK.");
                 }
 
-                // Get caption from text box
+                // ====================================================================
+                // CAPTION TEXT - Get caption from the description/caption text box
+                // ====================================================================
                 string caption = txtCaption.Text.Trim();
                 
-                // Use default if empty or placeholder
+                // Use default caption if the text box is empty or has placeholder text
                 if (string.IsNullOrWhiteSpace(caption) || caption == "Enter your video caption here...") {
                     caption = "Posted via BLVDE Content Studio #content #viral";
                 }

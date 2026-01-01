@@ -23,8 +23,11 @@ namespace BLVDEContentStudio
         private System.Windows.Forms.GroupBox grpAutomation;
         private System.Windows.Forms.Button btnAutoPost;
         private System.Windows.Forms.Button btnGenerateContent;
+        private System.Windows.Forms.Button btnLoadVideo;  // Load Video button
         private System.Windows.Forms.Label lblLastAction;
-        private System.Windows.Forms.TextBox txtCaption; // NEW: Caption input
+        private System.Windows.Forms.TextBox txtCaption;
+        private System.Windows.Forms.TextBox txtNotes;     // Notes textbox
+        private System.Windows.Forms.TextBox txtPrompts;   // Prompts textbox
 
         private System.Windows.Forms.GroupBox grpAgentConsole;
         private System.Windows.Forms.TextBox txtAgentInput;
@@ -40,11 +43,25 @@ namespace BLVDEContentStudio
             base.Dispose(disposing);
         }
 
+        // ====================================================================
+        // TAB CONTROL - Main navigation tabs
+        // ====================================================================
+        private System.Windows.Forms.TabControl mainTabControl;
+        private System.Windows.Forms.TabPage tabLoadMedia;   // NEW: Load Media tab
+        private System.Windows.Forms.TabPage tabUpload;
+        private System.Windows.Forms.TabPage tabNotes;       // NEW: Notes tab
+        private System.Windows.Forms.TabPage tabPrompts;     // NEW: Prompts tab
+        private System.Windows.Forms.TabPage tabSettings;
+        private System.Windows.Forms.TabPage tabSystem;
+        private System.Windows.Forms.TabPage tabConsole;
+
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
             
-            // MODERN COLOR PALETTE
+            // ====================================================================
+            // COLOR PALETTE - Modify these RGB values to change the theme colors
+            // ====================================================================
             System.Drawing.Color colorBg = System.Drawing.Color.FromArgb(245, 247, 250);     // Light gray-blue background
             System.Drawing.Color colorCard = System.Drawing.Color.White;                      // White cards
             System.Drawing.Color colorPrimary = System.Drawing.Color.FromArgb(99, 102, 241); // Modern indigo
@@ -55,12 +72,26 @@ namespace BLVDEContentStudio
             System.Drawing.Color colorTextLight = System.Drawing.Color.FromArgb(100, 116, 139); // Gray
             System.Drawing.Color colorBorder = System.Drawing.Color.FromArgb(226, 232, 240); // Light border
             
+            // ====================================================================
+            // FONT DEFINITIONS - Change these to modify fonts throughout the app
+            // ====================================================================
             System.Drawing.Font fontMain = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular);
             System.Drawing.Font fontButton = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             System.Drawing.Font fontHeader = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
             System.Drawing.Font fontLog = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular);
+            System.Drawing.Font fontTabHeader = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
 
-            // Initialize Controls
+            // Initialize Tab Controls
+            this.mainTabControl = new System.Windows.Forms.TabControl();
+            this.tabLoadMedia = new System.Windows.Forms.TabPage();
+            this.tabUpload = new System.Windows.Forms.TabPage();
+            this.tabNotes = new System.Windows.Forms.TabPage();
+            this.tabPrompts = new System.Windows.Forms.TabPage();
+            this.tabSettings = new System.Windows.Forms.TabPage();
+            this.tabSystem = new System.Windows.Forms.TabPage();
+            this.tabConsole = new System.Windows.Forms.TabPage();
+
+            // Initialize Other Controls
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.lblSystemStatus = new System.Windows.Forms.Label();
             this.grpSystemControl = new System.Windows.Forms.GroupBox();
@@ -71,7 +102,10 @@ namespace BLVDEContentStudio
             this.grpAutomation = new System.Windows.Forms.GroupBox();
             this.btnAutoPost = new System.Windows.Forms.Button();
             this.btnGenerateContent = new System.Windows.Forms.Button();
-            this.txtCaption = new System.Windows.Forms.TextBox(); // NEW
+            this.btnLoadVideo = new System.Windows.Forms.Button();
+            this.txtCaption = new System.Windows.Forms.TextBox();
+            this.txtNotes = new System.Windows.Forms.TextBox();
+            this.txtPrompts = new System.Windows.Forms.TextBox();
             this.lblLastAction = new System.Windows.Forms.Label();
             this.grpAgentConsole = new System.Windows.Forms.GroupBox();
             this.txtAgentInput = new System.Windows.Forms.TextBox();
@@ -80,12 +114,20 @@ namespace BLVDEContentStudio
             this.txtConsoleLog = new System.Windows.Forms.RichTextBox();
 
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
-            this.grpSystemControl.SuspendLayout();
-            this.grpAutomation.SuspendLayout();
-            this.grpAgentConsole.SuspendLayout();
+            this.mainTabControl.SuspendLayout();
+            this.tabLoadMedia.SuspendLayout();
+            this.tabUpload.SuspendLayout();
+            this.tabNotes.SuspendLayout();
+            this.tabPrompts.SuspendLayout();
+            this.tabSettings.SuspendLayout();
+            this.tabSystem.SuspendLayout();
+            this.tabConsole.SuspendLayout();
             this.SuspendLayout();
 
-            // MAIN FORM
+            // ====================================================================
+            // MAIN FORM SETTINGS - Window size, colors, title
+            // Change ClientSize to modify window dimensions (Width, Height)
+            // ====================================================================
             this.BackColor = colorBg;
             this.ForeColor = colorText;
             this.ClientSize = new System.Drawing.Size(1400, 900);
@@ -94,13 +136,18 @@ namespace BLVDEContentStudio
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Font = fontMain;
 
-            // LOGO & HEADER
+            // ====================================================================
+            // LOGO & HEADER - Top left branding area
+            // Position: X=40, Y=30 | Size: 150x60
+            // ====================================================================
             this.pictureBoxLogo.Location = new System.Drawing.Point(40, 30);
             this.pictureBoxLogo.Name = "pictureBoxLogo";
             this.pictureBoxLogo.Size = new System.Drawing.Size(150, 60);
             this.pictureBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             try { this.pictureBoxLogo.Image = System.Drawing.Image.FromFile("Resources/BlvdeLogo.png"); } catch { }
 
+            // HEADER LABEL - "Content Studio" text next to logo
+            // Position: X=210, Y=45
             this.lblSystemStatus.AutoSize = true;
             this.lblSystemStatus.Font = fontHeader;
             this.lblSystemStatus.ForeColor = colorText;
@@ -108,7 +155,9 @@ namespace BLVDEContentStudio
             this.lblSystemStatus.Name = "lblSystemStatus";
             this.lblSystemStatus.Text = "Content Studio";
 
-            // Modern Button Styler
+            // ====================================================================
+            // BUTTON STYLING FUNCTION - Applies consistent styling to all buttons
+            // ====================================================================
             void StyleBtn(System.Windows.Forms.Button btn, System.Drawing.Color themeColor, bool isPrimary = false) {
                 if (isPrimary) {
                     btn.BackColor = themeColor;
@@ -124,8 +173,8 @@ namespace BLVDEContentStudio
                 btn.Cursor = System.Windows.Forms.Cursors.Hand;
                 
                 var origBg = btn.BackColor;
-                var origFg = btn.ForeColor;
                 
+                // Hover effect - darkens primary buttons, lightens secondary buttons
                 btn.MouseEnter += (s, e) => {
                     if (isPrimary) {
                         btn.BackColor = System.Drawing.Color.FromArgb(
@@ -142,59 +191,78 @@ namespace BLVDEContentStudio
                 };
             }
 
-            // GROUP: SYSTEM CONTROL (Left sidebar)
-            this.grpSystemControl.Location = new System.Drawing.Point(40, 130);
-            this.grpSystemControl.Size = new System.Drawing.Size(280, 720);
-            this.grpSystemControl.Text = "System Controls";
-            this.grpSystemControl.BackColor = colorCard;
-            this.grpSystemControl.ForeColor = colorText;
-            this.grpSystemControl.Font = fontButton;
-
-            this.btnSettings.Location = new System.Drawing.Point(20, 40);
-            this.btnSettings.Size = new System.Drawing.Size(240, 50);
-            this.btnSettings.Text = "⚙️ Settings";
-            StyleBtn(this.btnSettings, colorPrimary);
-            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
-
-            this.btnLock.Location = new System.Drawing.Point(20, 120);
-            this.btnLock.Size = new System.Drawing.Size(240, 50);
-            this.btnLock.Text = "🔒 Lock Session";
-            StyleBtn(this.btnLock, colorTextLight);
-
-            this.btnRestart.Location = new System.Drawing.Point(20, 200);
-            this.btnRestart.Size = new System.Drawing.Size(240, 50);
-            this.btnRestart.Text = "🔄 Restart System";
-            StyleBtn(this.btnRestart, colorWarning);
-            this.btnRestart.Click += new System.EventHandler(this.btnRestart_Click);
-
-            this.btnShutdown.Location = new System.Drawing.Point(20, 280);
-            this.btnShutdown.Size = new System.Drawing.Size(240, 50);
-            this.btnShutdown.Text = "⚠️ Shutdown";
-            StyleBtn(this.btnShutdown, colorDanger);
-            this.btnShutdown.Click += new System.EventHandler(this.btnShutdown_Click);
-
-            this.grpSystemControl.Controls.AddRange(new Control[] { btnSettings, btnLock, btnRestart, btnShutdown });
-
-            // GROUP: AUTOMATION (Main content area)
-            this.grpAutomation.Location = new System.Drawing.Point(340, 130);
-            this.grpAutomation.Size = new System.Drawing.Size(1020, 400);
-            this.grpAutomation.Text = "Upload Content";
-            this.grpAutomation.BackColor = colorCard;
-            this.grpAutomation.ForeColor = colorText;
-            this.grpAutomation.Font = fontButton;
-
-            // CAPTION INPUT (NEW!)
-            this.txtCaption.Location = new System.Drawing.Point(30, 40);
-            this.txtCaption.Size = new System.Drawing.Size(960, 120);
+            // ====================================================================
+            // TAB CONTROL - Main navigation container
+            // Position: X=40, Y=130 | Size: Width=1320px, Height=720px
+            // ====================================================================
+            this.mainTabControl.Location = new System.Drawing.Point(40, 130);
+            this.mainTabControl.Size = new System.Drawing.Size(1320, 720);
+            this.mainTabControl.Font = fontTabHeader;
+            this.mainTabControl.SelectedIndex = 0;  // Default to first tab (Load Media)
+            
+            // ====================================================================
+            // TAB 0: LOAD MEDIA - Load video files or link files
+            // ====================================================================
+            this.tabLoadMedia.Text = "📂 Load Media";
+            this.tabLoadMedia.BackColor = colorCard;
+            this.tabLoadMedia.Padding = new Padding(20);
+            
+            // LOAD VIDEO BUTTON - Big prominent button to load media files
+            // Position: X=100, Y=100 | Size: Width=1100px, Height=400px
+            this.btnLoadVideo = new System.Windows.Forms.Button();
+            this.btnLoadVideo.Location = new System.Drawing.Point(100, 100);
+            this.btnLoadVideo.Size = new System.Drawing.Size(1100, 400);
+            this.btnLoadVideo.Text = "🛰️ LOAD MEDIA PACKET\n\nClick to select video file (.mp4, .mov) or link file (.txt)";
+            this.btnLoadVideo.Font = new System.Drawing.Font("Segoe UI Semibold", 18F, System.Drawing.FontStyle.Bold);
+            this.btnLoadVideo.BackColor = System.Drawing.Color.FromArgb(5, 5, 5);
+            this.btnLoadVideo.ForeColor = System.Drawing.Color.FromArgb(0, 210, 255); // Cyan
+            this.btnLoadVideo.FlatStyle = FlatStyle.Flat;
+            this.btnLoadVideo.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(0, 210, 255);
+            this.btnLoadVideo.FlatAppearance.BorderSize = 2;
+            this.btnLoadVideo.Cursor = Cursors.Hand;
+            
+            // Hover effects for Load Video button
+            this.btnLoadVideo.MouseEnter += (s, e) => { 
+                this.btnLoadVideo.BackColor = System.Drawing.Color.FromArgb(0, 210, 255); 
+                this.btnLoadVideo.ForeColor = Color.Black; 
+            };
+            this.btnLoadVideo.MouseLeave += (s, e) => { 
+                this.btnLoadVideo.BackColor = System.Drawing.Color.FromArgb(5, 5, 5); 
+                this.btnLoadVideo.ForeColor = System.Drawing.Color.FromArgb(0, 210, 255); 
+            };
+            
+            // Info label
+            Label lblLoadInfo = new Label();
+            lblLoadInfo.Location = new System.Drawing.Point(100, 520);
+            lblLoadInfo.Size = new System.Drawing.Size(1100, 100);
+            lblLoadInfo.Font = new System.Drawing.Font("Segoe UI", 10F);
+            lblLoadInfo.ForeColor = colorTextLight;
+            lblLoadInfo.Text = "Supported formats:\n" +
+                               "• Video files: .mp4, .mov\n" +
+                               "• Link files: .txt containing a public video URL (Google Drive, Dropbox, direct links)";
+            
+            this.tabLoadMedia.Controls.AddRange(new Control[] { btnLoadVideo, lblLoadInfo });
+            
+            // ====================================================================
+            // TAB 1: UPLOAD - Content upload and posting
+            // ====================================================================
+            this.tabUpload.Text = "📤 Upload";
+            this.tabUpload.BackColor = colorCard;
+            this.tabUpload.Padding = new Padding(20);
+            
+            // CAPTION INPUT BOX - Where users enter video description
+            // Position: X=30, Y=30 | Size: Width=1240px, Height=140px
+            this.txtCaption.Location = new System.Drawing.Point(30, 30);
+            this.txtCaption.Size = new System.Drawing.Size(1240, 140);
             this.txtCaption.Multiline = true;
             this.txtCaption.BackColor = colorCard;
             this.txtCaption.ForeColor = colorText;
-            this.txtCaption.Font = fontMain;
+            this.txtCaption.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.txtCaption.BorderStyle = BorderStyle.FixedSingle;
             this.txtCaption.Text = "Enter your video caption here...";
             this.txtCaption.ScrollBars = ScrollBars.Vertical;
             
-            // Placeholder behavior
+            // Placeholder behavior for caption box
             this.txtCaption.GotFocus += (s, e) => {
                 if (this.txtCaption.Text == "Enter your video caption here...") {
                     this.txtCaption.Text = "";
@@ -209,71 +277,261 @@ namespace BLVDEContentStudio
             };
             this.txtCaption.ForeColor = colorTextLight;
 
+            // STATUS LABEL - Shows current operation status
+            // Position: X=30, Y=190
             this.lblLastAction.AutoSize = true;
             this.lblLastAction.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular);
             this.lblLastAction.ForeColor = colorTextLight;
-            this.lblLastAction.Location = new System.Drawing.Point(30, 180);
+            this.lblLastAction.Location = new System.Drawing.Point(30, 190);
             this.lblLastAction.Text = "Status: Ready";
 
-            this.btnAutoPost.Location = new System.Drawing.Point(30, 230);
-            this.btnAutoPost.Size = new System.Drawing.Size(460, 130);
-            this.btnAutoPost.Text = "🚀 Upload to All Platforms";
+            // UPLOAD BUTTON - Main action button to post content
+            // Position: X=30, Y=240 | Size: Width=600px, Height=180px
+            this.btnAutoPost.Location = new System.Drawing.Point(30, 240);
+            this.btnAutoPost.Size = new System.Drawing.Size(600, 180);
+            this.btnAutoPost.Text = "� Upload to All Platforms";
+            this.btnAutoPost.Font = new System.Drawing.Font("Segoe UI Semibold", 14F, System.Drawing.FontStyle.Bold);
             StyleBtn(this.btnAutoPost, colorPrimary, true);
             this.btnAutoPost.Click += new System.EventHandler(this.btnAutoPost_Click);
 
-            this.btnGenerateContent.Location = new System.Drawing.Point(530, 230);
-            this.btnGenerateContent.Size = new System.Drawing.Size(470, 140);
+            // GENERATE TEST BUTTON - Creates dummy content for testing
+            // Position: X=670, Y=240 | Size: Width=600px, Height=180px
+            this.btnGenerateContent.Location = new System.Drawing.Point(670, 240);
+            this.btnGenerateContent.Size = new System.Drawing.Size(600, 180);
             this.btnGenerateContent.Text = "✨ Generate Test Content";
+            this.btnGenerateContent.Font = new System.Drawing.Font("Segoe UI Semibold", 14F, System.Drawing.FontStyle.Bold);
             StyleBtn(this.btnGenerateContent, colorSuccess);
+            this.btnGenerateContent.Click += new System.EventHandler(this.btnGenerateContent_Click);
 
-            this.grpAutomation.Controls.AddRange(new Control[] { txtCaption, lblLastAction, btnAutoPost, btnGenerateContent });
+            this.tabUpload.Controls.AddRange(new Control[] { txtCaption, lblLastAction, btnAutoPost, btnGenerateContent });
 
-            // GROUP: CONSOLE (Bottom)
-            this.grpAgentConsole.Location = new System.Drawing.Point(340, 550);
-            this.grpAgentConsole.Size = new System.Drawing.Size(1020, 300);
-            this.grpAgentConsole.Text = "Activity Log";
-            this.grpAgentConsole.BackColor = colorCard;
-            this.grpAgentConsole.ForeColor = colorText;
-            this.grpAgentConsole.Font = fontButton;
+            // ====================================================================
+            // TAB 2: NOTES - Notepad for general notes
+            // ====================================================================
+            this.tabNotes.Text = "📝 Notes";
+            this.tabNotes.BackColor = colorCard;
+            this.tabNotes.Padding = new Padding(20);
+            
+            // NOTES TEXTBOX - Large area for taking notes
+            // Position: X=30, Y=30 | Size: Width=1240px, Height=620px
+            this.txtNotes = new System.Windows.Forms.TextBox();
+            this.txtNotes.Location = new System.Drawing.Point(30, 30);
+            this.txtNotes.Size = new System.Drawing.Size(1240, 620);
+            this.txtNotes.Multiline = true;
+            this.txtNotes.BackColor = colorCard;
+            this.txtNotes.ForeColor = colorText;
+            this.txtNotes.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.txtNotes.BorderStyle = BorderStyle.FixedSingle;
+            this.txtNotes.ScrollBars = ScrollBars.Vertical;
+            this.txtNotes.Text = "Your notes here...\n\n";
+            
+            this.tabNotes.Controls.Add(txtNotes);
 
+            // ====================================================================
+            // TAB 3: PROMPTS - Storage for video prompts and templates
+            // ====================================================================
+            this.tabPrompts.Text = "💡 Prompts";
+            this.tabPrompts.BackColor = colorCard;
+            this.tabPrompts.Padding = new Padding(20);
+            
+            // PROMPTS TEXTBOX - Large area for storing prompts
+            // Position: X=30, Y=30 | Size: Width=1240px, Height=620px
+            this.txtPrompts = new System.Windows.Forms.TextBox();
+            this.txtPrompts.Location = new System.Drawing.Point(30, 30);
+            this.txtPrompts.Size = new System.Drawing.Size(1240, 620);
+            this.txtPrompts.Multiline = true;
+            this.txtPrompts.BackColor = colorCard;
+            this.txtPrompts.ForeColor = colorText;
+            this.txtPrompts.Font = new System.Drawing.Font("Consolas", 10F);
+            this.txtPrompts.BorderStyle = BorderStyle.FixedSingle;
+            this.txtPrompts.ScrollBars = ScrollBars.Vertical;
+            this.txtPrompts.Text = "Your video prompts and templates...\n\n" +
+                                   "Example:\n" +
+                                   "- Liminal space POV walking\n" +
+                                   "- Dark aesthetic cityscape\n" +
+                                   "- Cinematic tension builder\n";
+            
+            this.tabPrompts.Controls.Add(txtPrompts);
+
+            // ====================================================================
+            // TAB 4: SETTINGS - API configuration
+            // ====================================================================
+            this.tabSettings.Text = "⚙️ Settings";
+            this.tabSettings.BackColor = colorCard;
+            this.tabSettings.Padding = new Padding(20);
+            
+            // SETTINGS BUTTON - Opens configuration dialog
+            // Position: X=30, Y=30 | Size: Width=400px, Height=80px
+            this.btnSettings.Location = new System.Drawing.Point(30, 30);
+            this.btnSettings.Size = new System.Drawing.Size(400, 80);
+            this.btnSettings.Text = "⚙️ Configure API Keys & Account IDs";
+            this.btnSettings.Font = new System.Drawing.Font("Segoe UI Semibold", 13F, System.Drawing.FontStyle.Bold);
+            StyleBtn(this.btnSettings, colorPrimary, true);
+            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
+            
+            
+            // Settings info label
+            Label lblSettingsInfo = new Label();
+            lblSettingsInfo.Location = new System.Drawing.Point(30, 140);
+            lblSettingsInfo.Size = new System.Drawing.Size(1200, 120);
+            lblSettingsInfo.Font = new System.Drawing.Font("Segoe UI", 11F);
+            lblSettingsInfo.ForeColor = colorTextLight;
+            lblSettingsInfo.Text = "Configure your Blotato API credentials and platform account IDs here.\n\n" +
+                                   "You'll need:\n" +
+                                   "• Blotato API Key\n" +
+                                   "• TikTok Account ID (numeric)\n" +
+                                   "• Instagram Account ID (numeric)\n" +
+                                   "• YouTube Account ID (numeric)";
+            
+            // PRIVACY SECTION - For streaming protection
+            Label lblPrivacyHeader = new Label();
+            lblPrivacyHeader.Location = new System.Drawing.Point(30, 290);
+            lblPrivacyHeader.Size = new System.Drawing.Size(600, 30);
+            lblPrivacyHeader.Font = new System.Drawing.Font("Segoe UI Semibold", 13F, System.Drawing.FontStyle.Bold);
+            lblPrivacyHeader.ForeColor = colorText;
+            lblPrivacyHeader.Text = "🔒 Privacy & Streaming Protection";
+            
+            // HIDE API KEYS CHECKBOX - Masks credentials when checked
+            // Position: X=30, Y=340 | Size: Auto
+            CheckBox chkHideApiKeys = new CheckBox();
+            chkHideApiKeys.Name = "chkHideApiKeys";
+            chkHideApiKeys.Location = new System.Drawing.Point(30, 340);
+            chkHideApiKeys.Size = new System.Drawing.Size(600, 30);
+            chkHideApiKeys.Font = new System.Drawing.Font("Segoe UI", 12F);
+            chkHideApiKeys.ForeColor = colorText;
+            chkHideApiKeys.Text = "Hide API Keys (Streaming Mode)";
+            chkHideApiKeys.Checked = false;
+            
+            // Privacy info
+            Label lblPrivacyInfo = new Label();
+            lblPrivacyInfo.Location = new System.Drawing.Point(50, 380);
+            lblPrivacyInfo.Size = new System.Drawing.Size(1200, 60);
+            lblPrivacyInfo.Font = new System.Drawing.Font("Segoe UI", 10F);
+            lblPrivacyInfo.ForeColor = colorTextLight;
+            lblPrivacyInfo.Text = "When enabled, your API keys and account IDs will be masked with ••••• in the configuration dialog.\n" +
+                                   "This prevents accidentally showing sensitive credentials during screen sharing or streaming.";
+            
+            // Store checkbox reference for access in MainForm.cs
+            this.Controls.Add(chkHideApiKeys);
+            chkHideApiKeys.BringToFront();
+            
+            this.tabSettings.Controls.AddRange(new Control[] { 
+                btnSettings, lblSettingsInfo, lblPrivacyHeader, chkHideApiKeys, lblPrivacyInfo 
+            });
+
+            // ====================================================================
+            // TAB 5: SYSTEM - System control buttons
+            // ====================================================================
+            this.tabSystem.Text = "🖥️ System";
+            this.tabSystem.BackColor = colorCard;
+            this.tabSystem.Padding = new Padding(20);
+
+            // LOCK BUTTON - Position: X=30, Y=30 | Size: 400x70
+            this.btnLock.Location = new System.Drawing.Point(30, 30);
+            this.btnLock.Size = new System.Drawing.Size(400, 70);
+            this.btnLock.Text = "🔒 Lock Session";
+            this.btnLock.Font = new System.Drawing.Font("Segoe UI Semibold", 13F, System.Drawing.FontStyle.Bold);
+            StyleBtn(this.btnLock, colorTextLight);
+            this.btnLock.Click += new System.EventHandler(this.btnLock_Click);
+
+            // RESTART BUTTON - Position: X=30, Y=130 | Size: 400x70
+            this.btnRestart.Location = new System.Drawing.Point(30, 130);
+            this.btnRestart.Size = new System.Drawing.Size(400, 70);
+            this.btnRestart.Text = "� Restart System";
+            this.btnRestart.Font = new System.Drawing.Font("Segoe UI Semibold", 13F, System.Drawing.FontStyle.Bold);
+            StyleBtn(this.btnRestart, colorWarning);
+            this.btnRestart.Click += new System.EventHandler(this.btnRestart_Click);
+
+            // SHUTDOWN BUTTON - Position: X=30, Y=230 | Size: 400x70
+            this.btnShutdown.Location = new System.Drawing.Point(30, 230);
+            this.btnShutdown.Size = new System.Drawing.Size(400, 70);
+            this.btnShutdown.Text = "⚠️ Shutdown System";
+            this.btnShutdown.Font = new System.Drawing.Font("Segoe UI Semibold", 13F, System.Drawing.FontStyle.Bold);
+            StyleBtn(this.btnShutdown, colorDanger);
+            this.btnShutdown.Click += new System.EventHandler(this.btnShutdown_Click);
+
+            // Warning label
+            Label lblSystemWarning = new Label();
+            lblSystemWarning.Location = new System.Drawing.Point(30, 330);
+            lblSystemWarning.Size = new System.Drawing.Size(1200, 50);
+            lblSystemWarning.Font = new System.Drawing.Font("Segoe UI", 10F);
+            lblSystemWarning.ForeColor = colorDanger;
+            lblSystemWarning.Text = "⚠️ Warning: System controls will affect your computer. Use with caution.";
+            
+            this.tabSystem.Controls.AddRange(new Control[] { btnLock, btnRestart, btnShutdown, lblSystemWarning });
+
+            // ====================================================================
+            // TAB 5: CONSOLE - Activity log and command input
+            // ====================================================================
+            this.tabConsole.Text = "📊 Console";
+            this.tabConsole.BackColor = colorCard;
+            this.tabConsole.Padding = new Padding(20);
+
+            // CONSOLE LOG BOX - Shows activity and upload logs
+            // Position: X=20, Y=20 | Size: Width=900px, Height=620px
             this.txtConsoleLog.BackColor = System.Drawing.Color.FromArgb(15, 23, 42); // Dark slate
             this.txtConsoleLog.ForeColor = System.Drawing.Color.FromArgb(148, 163, 184); // Light slate
-            this.txtConsoleLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtConsoleLog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtConsoleLog.Font = fontLog;
-            this.txtConsoleLog.Location = new System.Drawing.Point(20, 35);
-            this.txtConsoleLog.Size = new System.Drawing.Size(700, 240);
+            this.txtConsoleLog.Location = new System.Drawing.Point(20, 20);
+            this.txtConsoleLog.Size = new System.Drawing.Size(900, 620);
             this.txtConsoleLog.ReadOnly = true;
             this.txtConsoleLog.ScrollBars = RichTextBoxScrollBars.Vertical;
             this.txtConsoleLog.Text = "> BLVDE Content Studio v12\n> Ready to upload content.\n";
 
-            this.lblAgentPrompt.Text = "Command:";
-            this.lblAgentPrompt.Location = new System.Drawing.Point(740, 35);
+            // COMMAND INPUT SECTION
+            // Label - Position: X=940, Y=20
+            this.lblAgentPrompt.Text = "Command Input:";
+            this.lblAgentPrompt.Location = new System.Drawing.Point(940, 20);
             this.lblAgentPrompt.AutoSize = true;
-            this.lblAgentPrompt.ForeColor = colorTextLight;
+            this.lblAgentPrompt.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
+            this.lblAgentPrompt.ForeColor = colorText;
 
-            this.txtAgentInput.Location = new System.Drawing.Point(740, 60);
-            this.txtAgentInput.Size = new System.Drawing.Size(260, 150);
+            // Text input box - Position: X=940, Y=55 | Size: Width=340px, Height=480px
+            this.txtAgentInput.Location = new System.Drawing.Point(940, 55);
+            this.txtAgentInput.Size = new System.Drawing.Size(340, 480);
             this.txtAgentInput.Multiline = true;
             this.txtAgentInput.BackColor = colorCard;
             this.txtAgentInput.ForeColor = colorText;
             this.txtAgentInput.BorderStyle = BorderStyle.FixedSingle;
-            this.txtAgentInput.Font = fontMain;
+            this.txtAgentInput.Font = new System.Drawing.Font("Consolas", 10F);
+            this.txtAgentInput.Text = "awaiting_instruction...";
+            this.txtAgentInput.ScrollBars = ScrollBars.Vertical;
 
-            this.btnExecuteAgent.Location = new System.Drawing.Point(740, 225);
-            this.btnExecuteAgent.Size = new System.Drawing.Size(260, 50);
-            this.btnExecuteAgent.Text = "Execute";
-            StyleBtn(this.btnExecuteAgent, colorPrimary);
-
-            this.grpAgentConsole.Controls.AddRange(new Control[] { txtConsoleLog, lblAgentPrompt, txtAgentInput, btnExecuteAgent });
-
-            // FINALIZE FORM
-            this.Controls.AddRange(new Control[] { pictureBoxLogo, lblSystemStatus, grpSystemControl, grpAutomation, grpAgentConsole });
+            // Execute button - Position: X=940, Y=555 | Size: Width=340px, Height=85px
+            this.btnExecuteAgent.Location = new System.Drawing.Point(940, 555);
+            this.btnExecuteAgent.Size = new System.Drawing.Size(340, 85);
+            this.btnExecuteAgent.Text = "▶ Execute Command";
+            this.btnExecuteAgent.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            StyleBtn(this.btnExecuteAgent, colorPrimary, true);
             
+            this.tabConsole.Controls.AddRange(new Control[] { txtConsoleLog, lblAgentPrompt, txtAgentInput, btnExecuteAgent });
+
+            // ====================================================================
+            // ADD TABS TO TAB CONTROL
+            // Order: Load Media → Upload → Notes → Prompts → Settings → System → Console
+            // ====================================================================
+            this.mainTabControl.Controls.AddRange(new Control[] { 
+                tabLoadMedia, tabUpload, tabNotes, tabPrompts, tabSettings, tabSystem, tabConsole 
+            });
+            
+            // ====================================================================
+            // ADD CONTROLS TO MAIN FORM
+            // ====================================================================
+            this.Controls.AddRange(new Control[] { pictureBoxLogo, lblSystemStatus, mainTabControl });
+            
+            // Finalize layout
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).EndInit();
-            this.grpSystemControl.ResumeLayout(false);
-            this.grpAutomation.ResumeLayout(false);
-            this.grpAgentConsole.ResumeLayout(false);
-            this.grpAgentConsole.PerformLayout();
+            this.mainTabControl.ResumeLayout(false);
+            this.tabLoadMedia.ResumeLayout(false);
+            this.tabUpload.ResumeLayout(false);
+            this.tabUpload.PerformLayout();
+            this.tabNotes.ResumeLayout(false);
+            this.tabPrompts.ResumeLayout(false);
+            this.tabSettings.ResumeLayout(false);
+            this.tabSystem.ResumeLayout(false);
+            this.tabConsole.ResumeLayout(false);
+            this.tabConsole.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
         }
