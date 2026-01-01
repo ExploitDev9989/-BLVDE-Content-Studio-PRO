@@ -1,0 +1,72 @@
+# BLVDE Studio v12 PRO - Telegram Edition
+
+**Version:** 12.0 PRO  
+**Build Date:** January 1, 2026  
+**Release Name:** Telegram Edition
+
+## 📦 EXE Information
+
+**File Name:** `BLVDE_Studio_v12_PRO_Telegram.exe`  
+**Location:** `Desktop\BLVDEContentStudio\`
+
+## ✨ Features in This Build
+
+### Core Features:
+- ✅ 7 Professional Tabs (Load Media, Upload, Notes, Prompts, Settings, System, Console)
+- ✅ Multi-platform content upload (TikTok, Instagram, YouTube)
+- ✅ Caption editor with rich text
+- ✅ Activity console logging
+
+### NEW in v12 PRO:
+- 🌙 **Dark Mode** - Toggle in Settings  
+- 📱 **Telegram Bot** - Remote control via mobile
+- 📁 **Google Drive** - Quick access button
+- 🔒 **Privacy Mode** - Hide API keys when streaming
+
+### Privacy & Security:
+- API key masking in dialogs
+- Network info privacy protection
+- Streaming-safe credential display
+
+### Remote Control Commands:
+- `/start` - Welcome & help
+- `/status` - System status check  
+- `/help` - Show available commands
+
+## 🔧 Technical Details
+
+**Framework:** .NET 8.0 Windows  
+**Architecture:** win-x64  
+**Deployment:** Single-file publish  
+**Dependencies:** Requires .NET 8 Runtime
+
+## 📝 Changelog
+
+### v12.0 PRO (Jan 1, 2026)
+- Added dark mode with proper tab coloring
+- Integrated Telegram bot (HTTP API)
+- Added Google Drive quick access
+- Created Network info service
+- Prepared Supabase database schema
+- Improved streaming privacy protection
+
+## 🚀 Quick Start
+
+1. Double-click `BLVDE_Studio_v12_PRO_Telegram.exe`
+2. Configure API keys in Settings
+3. (Optional) Connect Telegram bot for remote control
+4. Load media and start uploading!
+
+## 📱 Telegram Setup
+
+1. In app: Settings → 📱 Telegram Bot → Click "🔌 Connect"
+2. On phone: Open Telegram → Find your bot
+3. Send `/start` to begin!
+
+## 🌙 Dark Mode
+
+Settings → 🎨 Appearance → Check "🌙 Enable Dark Mode"
+
+---
+
+**Enjoy your professional content studio!** 🎬
