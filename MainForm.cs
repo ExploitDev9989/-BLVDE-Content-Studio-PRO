@@ -683,7 +683,96 @@ namespace BLVDEContentStudio
                 MessageBox.Show($"INSTRUCTION_QUEUED", "ACK");
             }
             
+            
             txtAgentInput.Text = "awaiting_instruction...";
+        }
+
+        // ====================================================================
+        // THEME SWITCHING - Apply light or dark mode
+        // ====================================================================
+        private void ApplyTheme(bool isDarkMode)
+        {
+            // Define color schemes
+            Color bgColor, cardColor, textColor, textLightColor, borderColor;
+            
+            if (isDarkMode)
+            {
+                // DARK MODE COLORS
+                bgColor = Color.FromArgb(17, 24, 39);           // Dark gray-blue
+                cardColor = Color.FromArgb(31, 41, 55);         // Slightly lighter dark
+                textColor = Color.FromArgb(243, 244, 246);      // Light gray text
+                textLightColor = Color.FromArgb(156, 163, 175); // Muted gray
+                borderColor = Color.FromArgb(55, 65, 81);       // Dark border
+            }
+            else
+            {
+                // LIGHT MODE COLORS (default)
+                bgColor = Color.FromArgb(245, 247, 250);
+                cardColor = Color.White;
+                textColor = Color.FromArgb(30, 41, 59);
+                textLightColor = Color.FromArgb(100, 116, 139);
+                borderColor = Color.FromArgb(226, 232, 240);
+            }
+            
+            // Apply to main form
+            this.BackColor = bgColor;
+            
+            // Apply to TabControl itself
+            if (mainTabControl != null)
+            {
+                mainTabControl.BackColor = bgColor;
+                
+                // Apply to all tabs
+                foreach (TabPage tab in mainTabControl.TabPages)
+                {
+                    tab.BackColor = cardColor;
+                    tab.ForeColor = textColor;
+                    
+                    // Update all controls in tab
+                    foreach (Control ctrl in tab.Controls)
+                    {
+                        if (ctrl is TextBox txt && ctrl.Name != "txtConsoleLog")
+                        {
+                            txt.BackColor = cardColor;
+                            txt.ForeColor = textColor;
+                        }
+                        else if (ctrl is Label lbl)
+                        {
+                            lbl.ForeColor = lbl.Font.Bold ? textColor : textLightColor;
+                        }
+                        else if (ctrl is Button btn)
+                        {
+                            // Don't change primary action buttons, keep their colors
+                            // Just update secondary/system buttons
+                        }
+                    }
+                }
+            }
+            
+            
+            // Save preference
+            SaveThemePreference(isDarkMode);
+        }
+        
+        private void SaveThemePreference(bool isDarkMode)
+        {
+            // Save to config file
+            try
+            {
+                var config = new {
+                    ApiKey = _apiKey,
+                    TikTokId = _tiktokId,
+                    InstaId = _instaId,
+                    YoutubeId = _youtubeId,
+                    ResWidth = _prefWidth,
+                    ResHeight = _prefHeight,
+                    DarkMode = isDarkMode
+                };
+                
+                string json = JsonConvert.SerializeObject(config, Formatting.Indented);
+                File.WriteAllText(CONFIG_FILE, json);
+            }
+            catch { }
         }
     }
 }

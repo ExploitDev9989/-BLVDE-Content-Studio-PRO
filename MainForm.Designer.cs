@@ -234,14 +234,49 @@ namespace BLVDEContentStudio
             // Info label
             Label lblLoadInfo = new Label();
             lblLoadInfo.Location = new System.Drawing.Point(100, 520);
-            lblLoadInfo.Size = new System.Drawing.Size(1100, 100);
+            lblLoadInfo.Size = new System.Drawing.Size(800, 100);
             lblLoadInfo.Font = new System.Drawing.Font("Segoe UI", 10F);
             lblLoadInfo.ForeColor = colorTextLight;
             lblLoadInfo.Text = "Supported formats:\n" +
                                "• Video files: .mp4, .mov\n" +
                                "• Link files: .txt containing a public video URL (Google Drive, Dropbox, direct links)";
             
-            this.tabLoadMedia.Controls.AddRange(new Control[] { btnLoadVideo, lblLoadInfo });
+            // OPEN GOOGLE DRIVE BUTTON - Quick access to Google Drive
+            // Position: X=930, Y=520 | Size: Width=270px, Height=100px
+            Button btnOpenGDrive = new Button();
+            btnOpenGDrive.Location = new System.Drawing.Point(930, 520);
+            btnOpenGDrive.Size = new System.Drawing.Size(270, 100);
+            btnOpenGDrive.Text = "📁 Open\nGoogle Drive";
+            btnOpenGDrive.Font = new System.Drawing.Font("Segoe UI Semibold", 14F, System.Drawing.FontStyle.Bold);
+            btnOpenGDrive.BackColor = colorPrimary;
+            btnOpenGDrive.ForeColor = Color.White;
+            btnOpenGDrive.FlatStyle = FlatStyle.Flat;
+            btnOpenGDrive.FlatAppearance.BorderSize = 0;
+            btnOpenGDrive.Cursor = Cursors.Hand;
+            
+            // Hover effect for Google Drive button
+            btnOpenGDrive.MouseEnter += (s, e) => {
+                btnOpenGDrive.BackColor = Color.FromArgb(
+                    Math.Max(0, colorPrimary.R - 20),
+                    Math.Max(0, colorPrimary.G - 20),
+                    Math.Max(0, colorPrimary.B - 20)
+                );
+            };
+            btnOpenGDrive.MouseLeave += (s, e) => {
+                btnOpenGDrive.BackColor = colorPrimary;
+            };
+            
+            // Open Google Drive in browser
+            btnOpenGDrive.Click += (s, e) => {
+                try {
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo {
+                        FileName = "https://drive.google.com/drive/my-drive",
+                        UseShellExecute = true
+                    });
+                } catch { }
+            };
+            
+            this.tabLoadMedia.Controls.AddRange(new Control[] { btnLoadVideo, lblLoadInfo, btnOpenGDrive });
             
             // ====================================================================
             // TAB 1: UPLOAD - Content upload and posting
@@ -402,6 +437,7 @@ namespace BLVDEContentStudio
             chkHideApiKeys.Text = "Hide API Keys (Streaming Mode)";
             chkHideApiKeys.Checked = false;
             
+            
             // Privacy info
             Label lblPrivacyInfo = new Label();
             lblPrivacyInfo.Location = new System.Drawing.Point(50, 380);
@@ -411,12 +447,50 @@ namespace BLVDEContentStudio
             lblPrivacyInfo.Text = "When enabled, your API keys and account IDs will be masked with ••••• in the configuration dialog.\n" +
                                    "This prevents accidentally showing sensitive credentials during screen sharing or streaming.";
             
+            // APPEARANCE SECTION - Theme customization
+            Label lblAppearanceHeader = new Label();
+            lblAppearanceHeader.Location = new System.Drawing.Point(30, 470);
+            lblAppearanceHeader.Size = new System.Drawing.Size(600, 30);
+            lblAppearanceHeader.Font = new System.Drawing.Font("Segoe UI Semibold", 13F, System.Drawing.FontStyle.Bold);
+            lblAppearanceHeader.ForeColor = colorText;
+            lblAppearanceHeader.Text = "🎨 Appearance";
+            
+            // DARK MODE CHECKBOX - Switches to dark theme
+            // Position: X=30, Y=520 | Size: Auto
+            CheckBox chkDarkMode = new CheckBox();
+            chkDarkMode.Name = "chkDarkMode";
+            chkDarkMode.Location = new System.Drawing.Point(30, 520);
+            chkDarkMode.Size = new System.Drawing.Size(600, 30);
+            chkDarkMode.Font = new System.Drawing.Font("Segoe UI", 12F);
+            chkDarkMode.ForeColor = colorText;
+            chkDarkMode.Text = "🌙 Enable Dark Mode";
+            chkDarkMode.Checked = false;  // Load from config later
+            
+            // Dark mode info
+            Label lblDarkModeInfo = new Label();
+            lblDarkModeInfo.Location = new System.Drawing.Point(50, 560);
+            lblDarkModeInfo.Size = new System.Drawing.Size(1200, 40);
+            lblDarkModeInfo.Font = new System.Drawing.Font("Segoe UI", 10F);
+            lblDarkModeInfo.ForeColor = colorTextLight;
+            lblDarkModeInfo.Text = "Switch between light and dark color schemes. Dark mode uses darker backgrounds\n" +
+                                    "and lighter text for comfortable viewing in low-light environments.";
+            
+            // Wire up dark mode toggle event
+            chkDarkMode.CheckedChanged += (s, e) => {
+                // Will implement theme switching logic
+                ApplyTheme(chkDarkMode.Checked);
+            };
+            
             // Store checkbox reference for access in MainForm.cs
             this.Controls.Add(chkHideApiKeys);
+            this.Controls.Add(chkDarkMode);
             chkHideApiKeys.BringToFront();
+            chkDarkMode.BringToFront();
             
             this.tabSettings.Controls.AddRange(new Control[] { 
-                btnSettings, lblSettingsInfo, lblPrivacyHeader, chkHideApiKeys, lblPrivacyInfo 
+                btnSettings, lblSettingsInfo, 
+                lblPrivacyHeader, chkHideApiKeys, lblPrivacyInfo,
+                lblAppearanceHeader, chkDarkMode, lblDarkModeInfo
             });
 
             // ====================================================================
