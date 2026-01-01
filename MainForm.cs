@@ -37,10 +37,15 @@ namespace BLVDEContentStudio
         private readonly string PATH_PENDING = Path.Combine(Application.StartupPath, "Content", "Pending");
         private readonly string PATH_POSTED = Path.Combine(Application.StartupPath, "Content", "Posted");
 
+        // Telegram Bot
+        private const string TELEGRAM_BOT_TOKEN = "8323792080:AAFEcw3HfQiF1VfpeDtl6VTC4Sn33vPC0GU";
+        private TelegramHttpBot? _telegramBot;
+
         public MainForm()
         {
             InitializeComponent();
             SetupCustomControls();
+            SetupTelegramBot();
             LoadConfiguration();
             EnsureDirectories();
             MessageBox.Show("SYSTEM_UPDATE_COMPLETE: VERSION_2.0\nLOAD_VIDEO_PROTOCOL_READY.", "BOOT_SEQUENCE");
@@ -60,6 +65,54 @@ namespace BLVDEContentStudio
             remoteTimer.Start();
             
             btnExecuteAgent.Click += btnExecuteAgent_Click;
+        }
+
+        private void SetupTelegramBot()
+        {
+            // Find the buttons
+            var btnConnect = this.Controls.Find("btnTelegramConnect", true).FirstOrDefault() as Button;
+            var btnDisconnect = this.Controls.Find("btnTelegramDisconnect", true).FirstOrDefault() as Button;
+            var lblStatus = this.Controls.Find("lblTelegramStatus", true).FirstOrDefault() as Label;
+
+            if (btnConnect != null)
+            {
+                btnConnect.Click += async (s, e) =>
+                {
+                    btnConnect.Enabled = false;
+                    if (lblStatus != null) lblStatus.Text = "Status: Connecting...";
+                    
+                    _telegramBot = new TelegramHttpBot(TELEGRAM_BOT_TOKEN);
+                    bool success = await _telegramBot.StartAsync();
+                    
+                    if (success)
+                    {
+                        if (lblStatus != null) lblStatus.Text = "Status: ✅ Connected";
+                        if (btnDisconnect != null) btnDisconnect.Enabled = true;
+                        Log("Telegram bot connected successfully", colGreen);
+                    }
+                    else
+                    {
+                        if (lblStatus != null) lblStatus.Text = "Status: ❌ Failed";
+                        btnConnect.Enabled = true;
+                        Log("Failed to connect Telegram bot", colRed);
+                    }
+                };
+            }
+
+            if (btnDisconnect != null)
+            {
+                btnDisconnect.Click += (s, e) =>
+                {
+                    _telegramBot?.Stop();
+                    _telegramBot = null;
+                    
+                    if (lblStatus != null) lblStatus.Text = "Status: Disconnected";
+                    if (btnConnect != null) btnConnect.Enabled = true;
+                    btnDisconnect.Enabled = false;
+                    
+                    Log("Telegram bot disconnected", colYellow);
+                };
+            }
         }
 
         // ====================================================================

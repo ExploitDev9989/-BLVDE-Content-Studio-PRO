@@ -481,16 +481,74 @@ namespace BLVDEContentStudio
                 ApplyTheme(chkDarkMode.Checked);
             };
             
+            // TELEGRAM BOT SECTION - Remote control via Telegram
+            Label lblTelegramHeader = new Label();
+            lblTelegramHeader.Location = new System.Drawing.Point(650, 290);
+            lblTelegramHeader.Size = new System.Drawing.Size(600, 30);
+            lblTelegramHeader.Font = new System.Drawing.Font("Segoe UI Semibold", 13F, System.Drawing.FontStyle.Bold);
+            lblTelegramHeader.ForeColor = colorText;
+            lblTelegramHeader.Text = "📱 Telegram Bot";
+            
+            // TELEGRAM STATUS LABEL
+            Label lblTelegramStatus = new Label();
+            lblTelegramStatus.Name = "lblTelegramStatus";
+            lblTelegramStatus.Location = new System.Drawing.Point(650, 330);
+            lblTelegramStatus.Size = new System.Drawing.Size(300, 30);
+            lblTelegramStatus.Font = new System.Drawing.Font("Segoe UI", 11F);
+            lblTelegramStatus.ForeColor = colorTextLight;
+            lblTelegramStatus.Text = "Status: Disconnected";
+            
+            // Store status label reference
+            this.Controls.Add(lblTelegramStatus);
+            lblTelegramStatus.BringToFront();
+            
+            // CONNECT BUTTON
+            Button btnTelegramConnect = new Button();
+            btnTelegramConnect.Name = "btnTelegramConnect";
+            btnTelegramConnect.Location = new System.Drawing.Point(650, 370);
+            btnTelegramConnect.Size = new System.Drawing.Size(180, 50);
+            btnTelegramConnect.Text = "🔌 Connect";
+            btnTelegramConnect.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            StyleBtn(btnTelegramConnect, colorSuccess, true);
+            
+            // DISCONNECT BUTTON  
+            Button btnTelegramDisconnect = new Button();
+            btnTelegramDisconnect.Name = "btnTelegramDisconnect";
+            btnTelegramDisconnect.Location = new System.Drawing.Point(850, 370);
+            btnTelegramDisconnect.Size = new System.Drawing.Size(180, 50);
+            btnTelegramDisconnect.Text = "⚡ Disconnect";
+            btnTelegramDisconnect.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            btnTelegramDisconnect.Enabled = false;
+            StyleBtn(btnTelegramDisconnect, colorDanger);
+            
+            // Telegram info
+            Label lblTelegramInfo = new Label();
+            lblTelegramInfo.Location = new System.Drawing.Point(650, 440);
+            lblTelegramInfo.Size = new System.Drawing.Size(600, 80);
+            lblTelegramInfo.Font = new System.Drawing.Font("Segoe UI", 10F);
+            lblTelegramInfo.ForeColor = colorTextLight;
+            lblTelegramInfo.Text = "Control your studio from your phone!\n\n" +
+                                    "Commands: /status, /help\n" +
+                                    "Message the bot on Telegram after connecting.";
+            
+            // Store button references
+            this.Controls.Add(btnTelegramConnect);
+            this.Controls.Add(btnTelegramDisconnect);
+            btnTelegramConnect.BringToFront();
+            btnTelegramDisconnect.BringToFront();
+            
             // Store checkbox reference for access in MainForm.cs
             this.Controls.Add(chkHideApiKeys);
             this.Controls.Add(chkDarkMode);
             chkHideApiKeys.BringToFront();
             chkDarkMode.BringToFront();
             
+            
             this.tabSettings.Controls.AddRange(new Control[] { 
                 btnSettings, lblSettingsInfo, 
                 lblPrivacyHeader, chkHideApiKeys, lblPrivacyInfo,
-                lblAppearanceHeader, chkDarkMode, lblDarkModeInfo
+                lblAppearanceHeader, chkDarkMode, lblDarkModeInfo,
+                lblTelegramHeader, lblTelegramStatus, btnTelegramConnect, btnTelegramDisconnect, lblTelegramInfo
             });
 
             // ====================================================================
