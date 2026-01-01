@@ -7,6 +7,12 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationIcon>Resources\AppIcon.ico</ApplicationIcon>
+    <Version>11.3.0</Version>
+    <AssemblyVersion>11.3.0.0</AssemblyVersion>
+    <FileVersion>11.3.0.0</FileVersion>
+    <Product>BLVDE Content Studio PRO</Product>
+    <Company>BLVDE Studios</Company>
+    <Copyright>Copyright © 2025 BLVDE Studios</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

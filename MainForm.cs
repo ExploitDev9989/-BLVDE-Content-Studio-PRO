@@ -10,10 +10,10 @@ namespace BLVDEContentStudio
 {
     public partial class MainForm : Form
     {
-        private readonly Color colRed = Color.FromArgb(255, 45, 85);
-        private readonly Color colGreen = Color.FromArgb(0, 255, 127);
-        private readonly Color colCyan = Color.Cyan;
-        private readonly Color colYellow = Color.Yellow;
+        private readonly Color colRed = Color.FromArgb(239, 68, 68);
+        private readonly Color colGreen = Color.FromArgb(34, 197, 94);
+        private readonly Color colCyan = Color.FromArgb(99, 102, 241);
+        private readonly Color colYellow = Color.FromArgb(251, 146, 60);
 
         private string _apiKey = "";
         private string _tiktokId = "";
@@ -290,8 +290,8 @@ namespace BLVDEContentStudio
             inputForm.BackColor = Color.Black;
             inputForm.ForeColor = colGreen;
 
-            Label lblKey = new Label() { Left = 20, Top = 20, Width = 500, Height = 40, Text = "API_KEY (Read Only)", Font = new Font("Consolas", 10F) };
-            TextBox txtKey = new TextBox() { Left = 20, Top = 50, Width = 500, Text = _apiKey, ReadOnly = true, BackColor = Color.FromArgb(30, 30, 30), ForeColor = colGreen, Font = new Font("Consolas", 10F) };
+            Label lblKey = new Label() { Left = 20, Top = 20, Width = 500, Height = 40, Text = "BLOTATO_API_KEY (Required)", Font = new Font("Consolas", 10F) };
+            TextBox txtKey = new TextBox() { Left = 20, Top = 50, Width = 500, Text = _apiKey, BackColor = Color.FromArgb(20, 20, 20), ForeColor = colGreen, Font = new Font("Consolas", 12F) };
 
             Label lblTk = new Label() { Left = 20, Top = 100, Width = 500, Text = ">> TIKTOK_ACCOUNT_ID (Numeric)", Font = new Font("Consolas", 10F) };
             TextBox txtTk = new TextBox() { Left = 20, Top = 130, Width = 500, Text = _tiktokId, BackColor = Color.FromArgb(20, 20, 20), ForeColor = colGreen, Font = new Font("Consolas", 12F) };
@@ -334,6 +334,7 @@ namespace BLVDEContentStudio
 
             if (inputForm.ShowDialog() == DialogResult.OK)
             {
+                _apiKey = txtKey.Text.Trim();
                 _tiktokId = txtTk.Text.Trim();
                 _instaId = txtIn.Text.Trim();
                 _youtubeId = txtYt.Text.Trim();
@@ -450,8 +451,13 @@ namespace BLVDEContentStudio
                     Log(">> IF UPLOAD FAILS, USE A .TXT FILE WITH A DIRECT LINK.");
                 }
 
-                // Post to ALL platforms
-                var caption = "Automated Post from BLVDE OS #fyp #liminal";
+                // Get caption from text box
+                string caption = txtCaption.Text.Trim();
+                
+                // Use default if empty or placeholder
+                if (string.IsNullOrWhiteSpace(caption) || caption == "Enter your video caption here...") {
+                    caption = "Posted via BLVDE Content Studio #content #viral";
+                }
                 
                 int successCount = 0;
                 int failCount = 0;

@@ -7,7 +7,7 @@ BLVDE Content Studio is a premium Windows application (C# / .NET 8.0) designed f
 ## 📥 Download
 
 > [!TIP]
-> **[Download the Latest Stable Version (v11.2-PRO)](https://github.com/ExploitDev9989/-BLVDE-Content-Studio-PRO/releases)**
+> **[Download the Latest Stable Version (v11.3-PRO)](https://github.com/ExploitDev9989/-BLVDE-Content-Studio-PRO/releases)**
 > *Note: For Windows 10/11. Requires .NET 8.0 Runtime.*
 
 ## 📸 Dashboard Preview [2K]

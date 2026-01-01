@@ -250,6 +250,35 @@ namespace BLVDEContentStudio
         {
             try
             {
+                // ============================================================
+                // YOUTUBE SHORTS REQUIREMENTS:
+                // ============================================================
+                // For a video to be recognized as a YouTube Short:
+                // 1. Duration must be 60 seconds or less (handled by your video)
+                // 2. Aspect ratio must be 9:16 vertical (handled by your video)
+                // 3. Must include #Shorts in title OR description
+                // ============================================================
+                
+                // Ensure #Shorts hashtag is present for proper categorization
+                string shortsCaption = caption;
+                if (!caption.Contains("#Shorts", StringComparison.OrdinalIgnoreCase))
+                {
+                    shortsCaption = caption + " #Shorts";
+                }
+                
+                // Create a title that includes #Shorts and fits YouTube's limit
+                string shortsTitle = shortsCaption.Length > 85 
+                    ? shortsCaption.Substring(0, 85) + " #Shorts" 
+                    : (shortsCaption.Contains("#Shorts", StringComparison.OrdinalIgnoreCase) 
+                        ? shortsCaption 
+                        : shortsCaption + " #Shorts");
+                
+                // Ensure title doesn't exceed 100 characters
+                if (shortsTitle.Length > 100)
+                {
+                    shortsTitle = shortsTitle.Substring(0, 97) + "...";
+                }
+                
                 var payload = new
                 {
                     post = new
@@ -257,14 +286,14 @@ namespace BLVDEContentStudio
                         accountId = _youtubeAccountId,
                         content = new
                         {
-                            text = caption,
+                            text = shortsCaption,  // Description with #Shorts
                             mediaUrls = new[] { videoUrl },
                             platform = "youtube"
                         },
                         target = new
                         {
                             targetType = "youtube",
-                            title = caption.Length > 90 ? caption.Substring(0, 90) : caption, // Max 100 chars, safer at 90
+                            title = shortsTitle,  // Title with #Shorts
                             privacyStatus = "public",
                             shouldNotifySubscribers = true
                         }
